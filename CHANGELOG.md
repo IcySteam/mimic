@@ -2,6 +2,7 @@
 
 ## 0.7.1 (2026-06-04)
 
+- Add `anti_gro` filter setting that jitters the wire TCP ack_seq per packet to defeat Linux TCP-GRO coalescing (needed when running over PPPoE on kernels with the v7.2 PPPoE GRO/GSO offload). Both peers must enable it; off by default for wire compatibility.
 - Allow unaligned memory access in BPF, fixing running on riscv64, etc.
 - Fix BPF verifier failure on clang 20 and kernel 6.15 (@hrimfaxi)
 - systemd: Workaround failure after wake from suspend by restarting the service (@flyxyz123)
