@@ -6,25 +6,32 @@ on:
 
 jobs:
   build-openwrt:
-    name: Build ${{ matrix.revision }} packages for ${{ matrix.arch }}
+    name: Build ${{ matrix.target }} packages for ${{ matrix.arch }}
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
         arch:
-          - mediatek-filogic
+          - aarch64_cortex-a53
+        target:
+          - mediatek/filogic
         revision:
           - openwrt-24.10
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          
       - name: Build
         uses: openwrt/gh-action-sdk@main
         env:
+          # ARCH tells Docker which generic ISA container to pull
           ARCH: ${{ matrix.arch }}-${{ matrix.revision }}
+          # TARGET tells setup.sh which specific router SDK to download
+          TARGET: ${{ matrix.target }}
           PACKAGES: mimic
           V: s
+          
       - name: Store packages
         uses: actions/upload-artifact@v4
         with:
