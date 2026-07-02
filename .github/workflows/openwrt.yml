@@ -21,14 +21,24 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          
+
+      # Inject the TARGET variable into a local Docker image
+      # TARGET tells setup.sh which specific router SDK to download
+      - name: Prepare custom SDK base image
+        run: |
+          cat << EOF > Dockerfile.base
+          FROM ghcr.io/openwrt/sdk:${{ matrix.arch }}-${{ matrix.revision }}
+          ENV TARGET=${{ matrix.target }}
+          EOF
+          docker build -t openwrt-sdk-custom -f Dockerfile.base .
+
       - name: Build
         uses: openwrt/gh-action-sdk@main
         env:
           # ARCH tells Docker which generic ISA container to pull
           ARCH: ${{ matrix.arch }}-${{ matrix.revision }}
-          # TARGET tells setup.sh which specific router SDK to download
-          TARGET: ${{ matrix.target }}
+          # Force the action to use the locally baked image
+          CONTAINER: openwrt-sdk-custom
           PACKAGES: mimic
           V: s
           
