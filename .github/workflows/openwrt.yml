@@ -30,7 +30,7 @@ jobs:
           FROM ghcr.io/openwrt/sdk:${{ matrix.arch }}-${{ matrix.revision }}
           ENV TARGET=${{ matrix.target }}
           EOF
-          docker build -t openwrt-sdk-custom -f Dockerfile.base .
+          docker build -t openwrt-sdk -f Dockerfile.base .
 
       - name: Build
         uses: openwrt/gh-action-sdk@main
@@ -38,7 +38,7 @@ jobs:
           # ARCH tells Docker which generic ISA container to pull
           ARCH: ${{ matrix.arch }}-${{ matrix.revision }}
           # Force the action to use the locally baked image
-          CONTAINER: openwrt-sdk-custom
+          CONTAINER: openwrt-sdk
           PACKAGES: mimic
           V: s
           
