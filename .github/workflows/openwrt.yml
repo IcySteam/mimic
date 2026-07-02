@@ -24,11 +24,11 @@ jobs:
 
       # The SDK container runs as a non-root user (UID 1000). 
       # We must match permissions so it can read/write to our workspace.
-      - name: Fix Workspace Permissions
+      - name: Fix workspace permissions
         run: sudo chown -R 1000:1000 ${{ github.workspace }}
 
       # Natively run the SDK, explicitly passing the TARGET env var
-      - name: Build Package Natively
+      - name: Build packages natively
         run: |
           docker run --rm \
             -v ${{ github.workspace }}:/workspace \
@@ -52,7 +52,7 @@ jobs:
         with:
           name: ${{ matrix.arch }}-${{ matrix.revision }}
           path: |
-            bin/packages/*/action/*.ipk
-            bin/packages/*/action/*.apk
+            bin/packages/*/base/mimic*.ipk
+            bin/packages/*/base/mimic*.apk
             bin/targets/*/*/packages/kmod-mimic*.ipk
             bin/targets/*/*/packages/kmod-mimic*.apk
