@@ -6,7 +6,7 @@ on:
 
 jobs:
   build-openwrt:
-    name: Build ${{ matrix.target }} packages for ${{ matrix.arch }}
+    name: Build ${{ matrix.target }} packages for ${{ matrix.arch }} on ${{ matrix.revision }}
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
